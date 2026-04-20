@@ -200,7 +200,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                 itemBuilder: (context, index) {
                   return PokemonCard(
                     pokemonURL: displayedFavorites[index],
-                    isPreview: showingPreview,
                   );
                 },
               ),
