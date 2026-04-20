@@ -72,18 +72,21 @@ class Pokemon {
   Ability? species;
   Sprites? sprites;
   List<Stats>? stats;
+  List<PokemonTypeSlot>? types;
   int? weight;
 
-  Pokemon(
-      {this.abilities,
-      this.height,
-      this.id,
-      this.moves,
-      this.name,
-      this.species,
-      this.sprites,
-      this.stats,
-      this.weight});
+  Pokemon({
+    this.abilities,
+    this.height,
+    this.id,
+    this.moves,
+    this.name,
+    this.species,
+    this.sprites,
+    this.stats,
+    this.types,
+    this.weight,
+  });
 
   Pokemon.fromJson(Map<String, dynamic> json) {
     if (json['abilities'] != null) {
@@ -111,6 +114,12 @@ class Pokemon {
         stats!.add(Stats.fromJson(v));
       });
     }
+    if (json['types'] != null) {
+      types = <PokemonTypeSlot>[];
+      json['types'].forEach((v) {
+        types!.add(PokemonTypeSlot.fromJson(v));
+      });
+    }
     weight = json['weight'];
   }
 
@@ -119,16 +128,12 @@ class Pokemon {
     if (abilities != null) {
       data['abilities'] = abilities!.map((v) => v.toJson()).toList();
     }
-
     data['height'] = height;
-
     data['id'] = id;
-
     if (moves != null) {
       data['moves'] = moves!.map((v) => v.toJson()).toList();
     }
     data['name'] = name;
-
     if (species != null) {
       data['species'] = species!.toJson();
     }
@@ -137,6 +142,9 @@ class Pokemon {
     }
     if (stats != null) {
       data['stats'] = stats!.map((v) => v.toJson()).toList();
+    }
+    if (types != null) {
+      data['types'] = types!.map((v) => v.toJson()).toList();
     }
     data['weight'] = weight;
     return data;
@@ -271,6 +279,46 @@ class Stats {
     if (stat != null) {
       data['stat'] = stat!.toJson();
     }
+    return data;
+  }
+}
+
+class PokemonTypeSlot {
+  int? slot;
+  PokemonTypeInfo? type;
+
+  PokemonTypeSlot({this.slot, this.type});
+
+  PokemonTypeSlot.fromJson(Map<String, dynamic> json) {
+    slot = json['slot'];
+    type = json['type'] != null ? PokemonTypeInfo.fromJson(json['type']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['slot'] = slot;
+    if (type != null) {
+      data['type'] = type!.toJson();
+    }
+    return data;
+  }
+}
+
+class PokemonTypeInfo {
+  String? name;
+  String? url;
+
+  PokemonTypeInfo({this.name, this.url});
+
+  PokemonTypeInfo.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['url'] = url;
     return data;
   }
 }
